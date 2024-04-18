@@ -15,7 +15,6 @@ const UsersView = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Get the form data
     const nombre = event.target.username.value;
     const apellido = event.target.lastname.value;
     const correo = event.target.correo.value;
@@ -31,10 +30,8 @@ const UsersView = () => {
         return;
       }
 
-    // Get the token from local storage
     const token = localStorage.getItem("token");
 
-    // Send the data to the server
     fetch("http://localhost:3000/users", {
       method: "POST",
       headers: {
@@ -45,11 +42,9 @@ const UsersView = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Handle the response from the server
         console.log(data);
       })
       .catch((error) => {
-        // Handle any errors
         console.error(error);
       });
       alert('Usuario agregado exitosamente')
@@ -59,7 +54,6 @@ const UsersView = () => {
     event.preventDefault();
     const correo = event.target.email.value;
 
-    // Get the token from local storage
     const token = localStorage.getItem("token");
     // Send the data to the server
     fetch(`http://localhost:3000/users/${correo}`, {
@@ -71,11 +65,9 @@ const UsersView = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Handle the response from the server
         console.log(data);
       })
       .catch((error) => {
-        // Handle any errors
         console.error(error);
       });
       alert('Usuario eliminado exitosamente')
@@ -87,10 +79,10 @@ const UsersView = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-white opacity-40 z-0"></div>
       
       {/* Cards */}
-      <div className="flex space-x-4">
+      <div className="flex space-x-16">
         <div className="w-72">
           <div
-            className="bg-white border rounded p-4 cursor-pointer hover:bg-gray-200 shadow-lg transition-all duration-200 transform hover:scale-105"
+            className="bg-white border-gray-200 rounded-lg p-6 cursor-pointer hover:bg-gray-200 shadow-lg transition-all duration-200 transform hover:scale-105"
             onClick={handleAddUserClick}
           >
             <h2 className="text-lg font-semibold mb-2">Agregar Usuario</h2>
@@ -101,7 +93,7 @@ const UsersView = () => {
         </div>
         <div className="w-72">
           <div
-            className="bg-white border rounded p-4 cursor-pointer hover:bg-gray-200 shadow-lg transition-all duration-200 transform hover:scale-105"
+            className="bg-white border-gray-200 rounded-lg p-6 cursor-pointer hover:bg-gray-200 shadow-lg transition-all duration-200 transform hover:scale-105"
             onClick={handleDeleteUserClick}
           >
             <h2 className="text-lg font-semibold mb-2">Eliminar Usuario</h2>
