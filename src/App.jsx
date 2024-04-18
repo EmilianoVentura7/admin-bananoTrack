@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginForm from './components/Login'; 
+import UsersView from './components/Usuarios';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginForm />} />
+          <Route path="/usuarios" element={<UsersView />} />
         </Routes>
       </Router>
     </div>
