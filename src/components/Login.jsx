@@ -1,7 +1,23 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React,  { useState } from "react";
+import { useNavigate} from "react-router-dom";
 
 function LoginForm() {
+    const navigateTo = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = () => {
+        if (email === "emiliano@example.com" && password === "ventura") {
+          // Si la autenticación es exitosa, redirigimos al usuario a la vista de usuarios
+          navigateTo('/usuarios');
+        } else {
+          // Si la autenticación falla, mostramos un mensaje de error o realizar otra acción
+          console.log("Error: Correo o contraseña incorrectos");
+        }
+      };
+
+
   return (
     <div className="flex h-screen w-screen items-center overflow-hidden px-2">
       {/* Background Gradient */}
@@ -24,6 +40,8 @@ function LoginForm() {
               id="correo"
               className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
               placeholder=" "
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <label
               htmlFor="email"
@@ -38,10 +56,12 @@ function LoginForm() {
         <div>
           <div className="relative mt-2 w-full">
             <input
-              type="text"
+              type="password"
               id="password"
               className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
               placeholder=" "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <label
               htmlFor="password"
@@ -53,7 +73,7 @@ function LoginForm() {
           </div>
         </div>
         <div className="flex w-full items-center">
-          <button className="shrink-0 inline-block w-full rounded-lg bg-blue-600 py-3 font-bold text-white">
+          <button className="shrink-0 inline-block w-full rounded-lg bg-blue-600 py-3 font-bold text-white" onClick={handleLogin}>
             Ingresar
           </button>
         </div>
