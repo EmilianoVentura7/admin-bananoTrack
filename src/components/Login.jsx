@@ -1,32 +1,45 @@
 // eslint-disable-next-line no-unused-vars
-import React,  { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
-    const navigateTo = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const navigateTo = useNavigate();
+  const [correo, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-    const handleLogin = () => {
-        if (email === "emiliano@example.com" && password === "ventura") {
-          // Si la autenticación es exitosa, redirigimos al usuario a la vista de usuarios
-          navigateTo('/usuarios');
-        } else {
-          // Si la autenticación falla, mostramos un mensaje de error o realizar otra acción
-          console.log("Error: Correo o contraseña incorrectos");
-        }
-      };
+  const handleLogin = async () => {
+    const token = localStorage.getItem('token');
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ correo, password }),
+    });
 
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data)
+      localStorage.setItem('token', data.token);
+      alert('Inicio de sesión exitoso');
+      navigateTo("/usuarios");
+    } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message);
+    }
+  };
 
   return (
     <div className="flex h-screen w-screen items-center overflow-hidden px-2">
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-white opacity-40 z-0"></div>
-      
       {/* Login */}
       <div className="relative flex w-96 flex-col space-y-5 rounded-lg border bg-white px-5 py-10 shadow-xl sm:mx-auto">
         <div className="-z-10 absolute top-4 left-1/2 h-full w-5/6 -translate-x-1/2 rounded-lg bg-blue-600 sm:-right-10 sm:top-auto sm:left-auto sm:w-full sm:translate-x-0"></div>
         <div className="mx-auto mb-2 space-y-3">
+        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           <h1 className="text-center text-3xl font-bold text-gray-700">
             Bienvenido
           </h1>
@@ -40,7 +53,7 @@ function LoginForm() {
               id="correo"
               className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
               placeholder=" "
-              value={email}
+              value={correo}
               onChange={(e) => setEmail(e.target.value)}
             />
             <label
@@ -73,7 +86,10 @@ function LoginForm() {
           </div>
         </div>
         <div className="flex w-full items-center">
-          <button className="shrink-0 inline-block w-full rounded-lg bg-blue-600 py-3 font-bold text-white" onClick={handleLogin}>
+          <button
+            className="shrink-0 inline-block w-full rounded-lg bg-blue-600 py-3 font-bold text-white"
+            onClick={handleLogin}
+          >
             Ingresar
           </button>
         </div>
